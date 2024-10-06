@@ -1,0 +1,45 @@
+function insertionSort(arr, callback) { 
+    let steps = [];
+    
+    for (let i = 1; i < arr.length; i++) {
+        let key = arr[i];
+        let j = i - 1;
+        
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+        
+        // Save the state of the array at each step
+        steps.push([...arr]);
+    }
+    
+    callback(steps);
+}
+
+// Function to get input, sort it, and display each step
+function performInsertionSort() {
+    const input = document.getElementById("numberInput").value;
+    const numbers = input.split(',').map(num => parseFloat(num.trim()));
+
+    if (numbers.some(isNaN)) {
+        document.getElementById("result").innerText = "Please enter valid numbers.";
+        return;
+    }
+
+    insertionSort(numbers, displaySteps);
+}
+
+// Function to display each step of the sorting process
+function displaySteps(steps) {
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = ""; // Clear previous results
+
+    steps.forEach((step, index) => {
+        const stepText = Step ${index + 1}: [${step.join(", ")}];
+        const stepElement = document.createElement("p");
+        stepElement.innerText = stepText;
+        resultDiv.appendChild(stepElement);
+    });
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort Visualization</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1e1e1e, #3c3c3c);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 30px;
+            background-color: #2e2e2e;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #f39c12;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e67e22;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            background-color: white;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insertion Sort Visualization</h1>
+        <p>Enter numbers separated by commas:</p>
+        <input type="text" id="numberInput" placeholder="e.g. 5, 2, 9, 1">
+        <button onclick="performInsertionSort()">Sort</button>
+        <div id="result"></div>
+    </div>
+    <script>
+        function insertionSort(arr, callback) { 
+            let steps = [];
+            
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+                
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];
+                    j = j - 1;
+                }
+                arr[j + 1] = key;
+                
+                // Save the state of the array at each step
+                steps.push([...arr]);
+            }
+            
+            callback(steps);
+        }
+
+        // Function to get input, sort it, and display each step
+        function performInsertionSort() {
+            const input = document.getElementById("numberInput").value;
+            const numbers = input.split(',').map(num => parseFloat(num.trim()));
+
+            if (numbers.some(isNaN)) {
+                document.getElementById("result").innerText = "Please enter valid numbers.";
+                return;
+            }
+
+            insertionSort(numbers, displaySteps);
+        }
+
+        // Function to display each step of the sorting process
+        function displaySteps(steps) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = ""; // Clear previous results
+
+            steps.forEach((step, index) => {
+                const stepText = `Step ${index + 1}: [${step.join(", ")}]`;
+                const stepElement = document.createElement("p");
+                stepElement.innerText = stepText;
+                resultDiv.appendChild(stepElement);
+            });
+        }
+    </script>
+</body>
+</html>
